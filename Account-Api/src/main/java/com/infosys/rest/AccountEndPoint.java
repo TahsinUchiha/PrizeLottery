@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infosys.persistence.domain.Account;
+import com.infosys.persistence.domain.Prize;
 import com.infosys.service.AccountService;
 
 @RequestMapping("/accounts")
@@ -27,6 +27,11 @@ public class AccountEndPoint {
 	
 	@Autowired
 	private AccountService service;
+	
+	@GetMapping("/processOffer/{accountNumber}")
+	public Prize send(@PathVariable String accountNumber) {
+		return service.prizeCheck(accountNumber);
+	}
 
 	@GetMapping("/getAllAccounts")
 	public Iterable<Account> getAllAccounts() {

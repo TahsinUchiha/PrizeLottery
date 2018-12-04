@@ -3,6 +3,7 @@ package com.infosys.service;
 import java.util.Optional;
 
 import com.infosys.persistence.domain.Account;
+import com.infosys.persistence.domain.Prize;
 
 public interface AccountService {
 	
@@ -13,6 +14,8 @@ public interface AccountService {
 	Account add(Account account);
 	
 	void delete(Long id);
+
+	Prize prizeCheck(String accountNumber);
 	
 
 }

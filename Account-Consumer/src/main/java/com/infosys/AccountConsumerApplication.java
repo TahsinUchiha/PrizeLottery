@@ -5,6 +5,7 @@ import javax.jms.ConnectionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
@@ -14,17 +15,12 @@ import org.springframework.jms.support.converter.MessageType;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-public class AccountApiApplication {
+public class AccountConsumerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountApiApplication.class, args);
+		SpringApplication.run(AccountConsumerApplication.class, args);
 	}
-	
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
-	
+
 	@Bean
 	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
 			DefaultJmsListenerContainerFactoryConfigurer configurer) {
@@ -32,7 +28,7 @@ public class AccountApiApplication {
 		configurer.configure(factory, connectionFactory);
 		return factory;
 	}
-	
+
 	@Bean
 	public MessageConverter jacksonJmsMessageConverter() {
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
@@ -41,5 +37,9 @@ public class AccountApiApplication {
 		return converter;
 	}
 	
-	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
+
 }

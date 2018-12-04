@@ -1,9 +1,11 @@
 package com.infosys.persistence.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,12 +18,19 @@ public class Account {
 	private long accountId;
 	private String firstName;
 	private String lastName;
+	@Id
 	private String accountNumber;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Prize prize;
 	
 	public Account() {
 		
 	}
 	
+	public Prize getPrize() {
+		return prize;
+	}
+
 	public Account(String firstName, String lastName, String accountNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -51,6 +60,17 @@ public class Account {
 	}
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
+	}
+
+	public void setPrize(Prize prize) {
+		this.prize = prize;
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Account [accountId=" + accountId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", accountNumber=" + accountNumber + ", prize=" + prize + "]";
 	}
 
 }

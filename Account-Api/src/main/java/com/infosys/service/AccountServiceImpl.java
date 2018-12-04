@@ -6,13 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infosys.persistence.domain.Account;
+import com.infosys.persistence.domain.Prize;
 import com.infosys.persistence.repository.AccountRepository;
+import com.infosys.service.external.APICaller;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	private AccountRepository accountRepo;
+	
+	@Autowired
+	private APICaller external;
 
 	@Override
 	public Optional<Account> get(Long id) {
@@ -27,6 +32,9 @@ public class AccountServiceImpl implements AccountService {
 
 
 	public Account add(Account account) {
+		account.setAccountNumber(external.getAccountNumber());
+		account.setPrize(external.getPrize(account.getAccountNumber()));
+		external.persist(account);
 		// TODO Auto-generated method stub
 		return accountRepo.save(account);
 	}
@@ -35,6 +43,10 @@ public class AccountServiceImpl implements AccountService {
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 		accountRepo.deleteById(id);
+	}
+
+	public Prize prizeCheck(String accountNumber) {
+		return external.getPrize(accountNumber);
 	}
 	
 	
